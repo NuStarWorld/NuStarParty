@@ -24,6 +24,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
 import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -40,50 +42,54 @@ import top.nustar.nustarparty.api.event.RefuseJoinApplicationEvent;
 public class PartyImpl implements Party {
     private final UUID partyUUID;
     private String partyName;
-    private OfflinePlayer leader;
-    private final List<OfflinePlayer> members = new ArrayList<>();
-    private final List<OfflinePlayer> joinApplicationList = new ArrayList<>();
+    private UUID leader;
+    private final List<UUID> members = new ArrayList<>();
+    private final List<UUID> joinApplicationList = new ArrayList<>();
     private final int maxSize;
     private AtomicBoolean sendAddJoinApplicationPlaceholder = new AtomicBoolean(false);
 
     public PartyImpl(UUID partyUUID, OfflinePlayer leader, int maxSize) {
         this.partyUUID = partyUUID;
-        this.leader = leader;
+        this.leader = leader.getUniqueId();
         this.partyName = leader.getName() + "的队伍";
         this.maxSize = maxSize;
     }
 
     @Override
     public void addMember(OfflinePlayer member) {
-        members.add(member);
+        members.add(member.getUniqueId());
     }
 
     @Override
     public void removeMember(OfflinePlayer member) {
-        members.removeIf(offlinePlayer -> offlinePlayer.getUniqueId().equals(member.getUniqueId()));
+        members.removeIf(offlinePlayer -> offlinePlayer.equals(member.getUniqueId()));
     }
 
     @Override
     public OfflinePlayer removeMember(Predicate<OfflinePlayer> matcher) {
         return members.stream()
-                .filter(matcher)
+                .filter(memberUid -> matcher.test(Bukkit.getOfflinePlayer(memberUid)))
                 .findFirst()
-                .map(offlinePlayer -> {
-                    removeMember(offlinePlayer);
-                    return offlinePlayer;
+                .map(memberUid -> {
+                    OfflinePlayer member = Bukkit.getOfflinePlayer(memberUid);
+                    removeMember(member);
+                    return member;
                 })
                 .orElse(null);
     }
 
     @Override
     public boolean joinApplicationExist(Player player) {
-        return joinApplicationList.contains(player);
+        return joinApplicationList.contains(player.getUniqueId());
     }
 
     @Override
     public Optional<OfflinePlayer> popJoinApplicant(Predicate<OfflinePlayer> matcher, boolean isAccept) {
         Optional<OfflinePlayer> popJoinApplicant =
-                joinApplicationList.stream().filter(matcher).findFirst();
+                joinApplicationList.stream()
+                        .filter(memberUid -> matcher.test(Bukkit.getOfflinePlayer(memberUid)))
+                        .map(Bukkit::getOfflinePlayer)
+                        .findFirst();
         if (popJoinApplicant.isPresent()) {
             OfflinePlayer applicant = popJoinApplicant.get();
             if (isAccept) {
@@ -97,7 +103,7 @@ public class PartyImpl implements Party {
                 Bukkit.getPluginManager().callEvent(refuseJoinApplicationPreEvent);
                 if (refuseJoinApplicationPreEvent.isCancelled()) return Optional.empty();
             }
-            joinApplicationList.remove(applicant);
+            joinApplicationList.remove(applicant.getUniqueId());
             if (isAccept) {
                 addMember(applicant);
                 Bukkit.getPluginManager().callEvent(new AcceptJoinApplicationEvent.After(this, applicant));
@@ -112,17 +118,17 @@ public class PartyImpl implements Party {
 
     @Override
     public void addJoinApplication(Player player) {
-        joinApplicationList.add(player);
+        joinApplicationList.add(player.getUniqueId());
     }
 
     @Override
     public boolean isLeader(UUID playerUUID) {
-        return leader.getUniqueId().equals(playerUUID);
+        return leader.equals(playerUUID);
     }
 
     @Override
     public boolean isLeader(String playerName) {
-        return leader.getName().equals(playerName);
+        return Bukkit.getOfflinePlayer(leader).getName().equals(playerName);
     }
 
     @Override
@@ -143,8 +149,8 @@ public class PartyImpl implements Party {
     @Override
     public boolean isMember(UUID playerUUID) {
         if (isLeader(playerUUID)) return true;
-        for (OfflinePlayer member : members) {
-            if (member.getUniqueId().equals(playerUUID)) {
+        for (UUID member : members) {
+            if (member.equals(playerUUID)) {
                 return true;
             }
         }
@@ -153,9 +159,9 @@ public class PartyImpl implements Party {
 
     @Override
     public boolean isMember(String memberName) {
-        if (leader.getName().equals(memberName)) return true;
-        for (OfflinePlayer member : members) {
-            if (member.getName().equals(memberName)) {
+        if (isLeader(memberName)) return true;
+        for (UUID member : members) {
+            if (Bukkit.getOfflinePlayer(member).getName().equals(memberName)) {
                 return true;
             }
         }
@@ -164,7 +170,7 @@ public class PartyImpl implements Party {
 
     @Override
     public Party copy() {
-        PartyImpl party = new PartyImpl(partyUUID, leader, maxSize);
+        PartyImpl party = new PartyImpl(partyUUID, Bukkit.getOfflinePlayer(leader), maxSize);
         party.members.addAll(members);
         party.joinApplicationList.addAll(joinApplicationList);
         return party;
@@ -172,12 +178,41 @@ public class PartyImpl implements Party {
 
     @Override
     public UUID getLeaderUid() {
-        return leader.getUniqueId();
+        return leader;
     }
 
     @Override
     public String getLeaderName() {
-        return leader.getName();
+        return Bukkit.getOfflinePlayer(leader).getName();
+    }
+
+    @Override
+    public OfflinePlayer getLeader() {
+        return Bukkit.getOfflinePlayer(leader);
+    }
+
+    @Override
+    public List<UUID> getMemberUids() {
+        return members;
+    }
+
+    @Override
+    public List<UUID> getJoinApplicationUids() {
+        return joinApplicationList;
+    }
+
+    @Override
+    public List<OfflinePlayer> getMembers() {
+        return members.stream()
+                .map(Bukkit::getOfflinePlayer)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OfflinePlayer> getJoinApplicationList() {
+        return joinApplicationList.stream()
+                .map(Bukkit::getOfflinePlayer)
+                .collect(Collectors.toList());
     }
 
     @Override

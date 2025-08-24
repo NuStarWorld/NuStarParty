@@ -72,9 +72,13 @@ public interface Party {
 
     List<OfflinePlayer> getJoinApplicationList();
 
+    List<UUID> getMemberUids();
+
+    List<UUID> getJoinApplicationUids();
+
     void setPartyName(String partyName);
 
-    void setLeader(OfflinePlayer leader);
+    void setLeader(UUID leader);
 
     int getMaxSize();
 

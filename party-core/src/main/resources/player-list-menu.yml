@@ -1,0 +1,50 @@
+MenuName: "玩家列表"
+Title: "§e§l玩家列表"
+Layout:
+  - "#########"
+  - "#       #"
+  - "#       #"
+  - "A###B###C"
+
+Buttons:
+  '#':
+    name: "§8—"
+    data: 11
+    material: 'stained_glass_pane'
+    lore: []
+  'A':
+    name: "§7◀ 上一页"
+    material: 'paper'
+    type: "lastPage"
+    lore: []
+  'B':
+    name: "§6队伍列表"
+    material: 'slime_ball'
+    type: "partyList"
+    lore:
+      - "§7点击查看所有队伍列表"
+  'C':
+    name: "§7下一页 ▶"
+    material: 'paper'
+    type: "nextPage"
+    lore: []
+  player:
+    name: "§f玩家 - {name}"
+    material: 'skull_item'
+    data: 3
+    lore:
+      - "§8├ §f等级: §e{level}"
+      - "§8├ §f生命: §c❤ {health}"
+      - "§8├ §f在线状态: §a✓ 在线"
+      - ""
+      - "§e✔ 左键邀请加入队伍"
+    offline-lore:
+      - "§8├ §f上次在线: §7{last_online}"
+      - "§8├ §f状态: §8✗ 离线"
+      - ""
+      - "§7※ 离线玩家可能无法及时响应"
+      - "§e✔ 左键邀请加入队伍"
+  empty:
+    name: "§a✨ 赶快寻找玩家组成队伍吧"
+    material: 'barrier'
+    offline-lore: []

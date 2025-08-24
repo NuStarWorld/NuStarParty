@@ -1,0 +1,58 @@
+# 杂项消息提示
+onCreateParty: "§a你创建了一个队伍"
+onNotJoinParty: "§c你没有加入任何队伍"
+onSomeoneJoinedParty: "§a{member} 加入了你的队伍"
+onJoinParty: "§a你加入了 {leader} 的队伍"
+onQuitParty: "§c你退出了 {leader} 的队伍"
+onMemberQuitParty: "§c{member} 退出了队伍"
+onLeaderQuitParty: "§c队长不能退出队伍！"
+onNonLeaderOpenJoinApplicationMenu: "§c非队长不能打开队伍加入申请列表"
+onPartyFull: "§f{leader} 的队伍已满"
+onPartyNotExist: "§c队伍不存在"
+onPartyAlreadyExist: "§c队伍已存在"
+onPartyAlreadyJoined: "§c你已经加入过队伍"
+
+# 申请相关提示
+onJoinPartyApplication: "§a你申请加入 {leader} 的队伍"
+onJoinPartyAccept: "§a {leader} 的队伍通过了你的申请"
+onJoinPartyRefuse: "§c{leader} 拒绝了 {applicant} 的入队申请"
+onPartyRefuseJoinApplication: "§c{leader} 的队伍拒绝了你的申请"
+onSomeoneJoinPartyApplication: "§a{player} 申请加入你的队伍"
+onJoinPartyApplicationAlreadyExist: "§c你之前已经申请过了，请耐心等待吧！"
+
+# 踢人提示
+onKickedOutParty: "§c你被 {leader} 踢出了队伍，理由: {reason}"
+onKickParty: "§c{leader} 将 {member} 踢出了队伍，理由: {reason}"
+onKickPartyFail: "§c你没有权限踢人！"
+onKickPartyNotInParty: "§c队伍中没有这名玩家，踢出失败"
+
+# 解散队伍提示
+onPartyDisband: "§f你解散了队伍"
+onLeaderDisbandParty: "§c{leader} 解散了队伍，请重新寻找队伍吧！"
+onNonLeaderDisbandParty: "§c非队长不能解散队伍！"
+
+# 邀请相关消息提示
+onInviteJoinParty: "§a你向 {invited} 发起了入队邀请。"
+onSomeoneInviteJoinParty: "§a{inviter} 邀请你加入 {leader} 的队伍"
+onInviteJoinPartyAccept: "§a你已接受 {inviter} 的邀请"
+onInviteJoinPartyRefuse: "§c你已拒绝 {inviter} 的邀请"
+onInviteAlreadyJoinedParty: "§c{invited} 已经在队伍中了，请勿重复邀请！"
+onSomeoneInviteJoinPartyRefuse: "§c{invited} 拒绝了你的队伍邀请"
+onInviteApplicationAlreadyExist: "§c你之前已经邀请过 {invited}，请耐心等待吧！"
+onInviteJoinPartyTimeout: "§c你已超时等待 {inviter} 的邀请"
+
+# 其他消息提示
+onPartyMerge: "§e{leader} 申请与你的队伍合并"
+onPartyMergeRefuse: "§c{leader} 拒绝了合并队伍的请求"
+onPartyMergeAccept: "§a{leader} 接受了你的合并请求"
+onPartyTransferLeader: "§e{leader} 将队伍的所有权转让给了 {member}"
+onChangePickupMode: "§a{leader} 将队伍的拾取模式改为了 {mode}"
+onSetPartyDestination: "§a{leader} 将队伍的目的地设置为 {destination}"
+onSendGatherApplication: "§a{leader} 发起了集结请求，快去集合吧！"
+
+# Dungeon
+onNonLeaderStartDungeon: "§c非队长不能开始副本"
+onOtherMemberInDungeon: "§c有组员正在副本中，请稍后再试"
+onTeleportToDungeon: "§a当前队伍有未完成的地牢副本，已将你传送至地牢副本"
+onTeleportToDungeonConditionsNotMet: "§c你不满足加入当前队伍副本的条件！"
+onCannotDisbandPartyWhileInDungeon: "§c你正在地牢中，不能解散队伍！"

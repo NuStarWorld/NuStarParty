@@ -1,0 +1,63 @@
+MenuName: "邀请列表"
+Title: "§e§l我的邀请列表"
+Layout:
+  - "#########"
+  - "#       #"
+  - "#       #"
+  - "A###B###C"
+
+Buttons:
+  '#':
+    name: "§8—"
+    data: 11
+    material: 'stained_glass_pane'
+    lore: []
+  'A':
+    name: "§7◀ 上一页"
+    material: 'paper'
+    type: "lastPage"
+    lore: []
+  'B':
+    name: "§6§l队伍列表"
+    material: 'slime_ball'
+    type: "partyList"
+    lore:
+      - "§7查看所有队伍列表"
+      - "§a» 点击查看 «"
+  'C':
+    name: "§7下一页 ▶"
+    material: 'paper'
+    type: "nextPage"
+    lore: []
+  inviter:
+    name: "§f邀请人 - {name}"
+    material: 'skull_item'
+    data: 3
+    lore:
+      - "§8├ §f等级: §e{level}"
+      - "§8├ §f生命: §c❤ {health}"
+      - "§8├ §f在线状态: §a✓ 在线"
+      - "§8├ §f队伍人数: {partySize}/{partyMaxSize}"
+      - "§8└ §f队伍队长: {partyLeader}"
+      - ""
+      - "§e✔ 左键接受邀请"
+      - "§c✖ 右键拒绝邀请"
+    offline-lore:
+      - "§8├ §f上次在线: §7{last_online}"
+      - "§8├ §f状态: §8✗ 离线"
+      - "§8├ §f队伍人数: {partySize}/{partyMaxSize}"
+      - "§8└ §f所在队伍队长: {partyLeader}"
+      - ""
+      - "§7※ 离线玩家可能无法及时响应"
+      - "§e✔ 左键接受邀请"
+      - "§c✖ 右键拒绝邀请"
+    invite-apply-lore:
+      - ""
+      - "§f邀请理由:{inviteReason}"
+      - ""
+  empty:
+    name: "§a✨ 待批准邀请"
+    material: 'barrier'
+    offline-lore:
+      - "§7当前没有玩家邀请你"
+      - "§f» 尝试前往队伍列表选择要加入的队伍"

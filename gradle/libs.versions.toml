@@ -1,0 +1,21 @@
+[versions]
+lombok = "1.18.38"
+spigot-api = "1.12.2-R0.1-SNAPSHOT"
+placeholderapi = "2.11.6"
+minecraft-next-spigot = "0.1.0-20250722.144016-1"
+nustar-gui = "1.0.0-SNAPSHOT"
+nustar-corebridge = "1.0.0-20250804.131318-10"
+bstats = "3.0.2"
+kotlin-stdlib = "1.5.20"
+
+[plugins]
+
+[libraries]
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin-stdlib" }
+bstats = { group = "org.bstats", name = "bstats-bukkit", version.ref = "bstats" }
+nustar-gui = { group = "top.nustar", name = "NuStarGUI", version.ref = "nustar-gui"}
+nustar-corebridge = { group = "top.nustar.nustarcorebridge", name = "NuStarCoreBridge", version.ref = "nustar-corebridge"}
+lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
+spigot-api = { group = "org.spigotmc", name = "spigot-api", version.ref = "spigot-api" }
+placeholderapi = { group = "me.clip", name = "placeholderapi", version.ref = "placeholderapi" }
+minecraft-next-spigot = { group = "team.idealstate.minecraft", name = "minecraft-next-spigot", version.ref = "minecraft-next-spigot" }

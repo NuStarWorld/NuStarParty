@@ -1,0 +1,54 @@
+MenuName: "加入队伍申请列表"
+Title: "§e§l加入队伍申请列表"
+Layout:
+  - "#########"
+  - "#       #"
+  - "#       #"
+  - "A###B###C"
+
+Buttons:
+  '#':
+    name: "§8—"
+    data: 11
+    material: 'stained_glass_pane'
+    lore: []
+  'A':
+    name: "§7◀ 上一页"
+    material: 'paper'
+    type: "lastPage"
+    lore: []
+  'B':
+    name: "§6我的队伍"
+    material: 'gold_helmet'
+    type: "myParty"
+    lore:
+      - "§7点击查看队伍信息和成员列表"
+  'C':
+    name: "§7下一页 ▶"
+    material: 'paper'
+    type: "nextPage"
+    lore: []
+  applicant:
+    name: "§f申请人 - {name}"
+    material: 'skull_item'
+    data: 3
+    lore:
+      - "§8├ §f等级: §e{level}"
+      - "§8├ §f生命: §c❤ {health}"
+      - "§8└ §f在线状态: §a✓ 在线"
+      - ""
+      - "§e✔ 左键接受申请"
+      - "§c✖ 右键拒绝申请"
+    offline-lore:
+      - "§8├ §f上次在线: §7{last_online}"
+      - "§8└ §f状态: §8✗ 离线"
+      - ""
+      - "§7※ 离线玩家可能无法及时响应"
+      - "§e✔ 左键接受申请"
+      - "§c✖ 右键拒绝申请"
+  empty:
+    name: "§a待批准申请"
+    material: 'barrier'
+    offline-lore:
+      - "§7当前没有玩家申请加入"
+      - "§f» 尝试 §6世界频道 §f招募成员"

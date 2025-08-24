@@ -1,0 +1,4 @@
+debug: false
+
+# 队伍最大人数
+party-max-size: 25

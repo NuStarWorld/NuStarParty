@@ -1,0 +1,66 @@
+MenuName: "队伍菜单"
+Title: "§7§l队伍列表"
+Layout:
+  - "#########"
+  - "#       #"
+  - "#       #"
+  - "#       #"
+  - "A#BE#FD#C"
+
+Buttons:
+  '#':
+    name: "§f玻璃板"
+    data: 11
+    material: 'stained_glass_pane'
+    lore: []
+  'A':
+    name: "§7上一页"
+    material: 'paper'
+    type: "lastPage"
+    lore: []
+  'B':
+    name: "§6创建一个队伍"
+    material: 'leather_helmet'
+    type: "createParty"
+    lore:
+      - "§7点击创建一个队伍"
+  'C':
+    name: "§7下一页"
+    material: 'paper'
+    type: "nextPage"
+    lore: []
+  'D':
+    name: "§6邀请列表"
+    material: 'book'
+    type: "inviteApplicationList"
+    lore:
+      - "§7点击查看邀请列表"
+  'F':
+    name: "§6玩家列表"
+    material: 'EYE_OF_ENDER'
+    type: "playerList"
+    lore:
+      - "§7点击查看玩家列表"
+  'E':
+    name: "§6我的队伍"
+    material: 'gold_helmet'
+    type: "myParty"
+    lore:
+      - "§7点击查看队伍信息和成员列表"
+  empty:
+    name: "§f空闲位置"
+    material: 'barrier'
+    lore:
+      - "§f快点自己创建一个吧"
+  party:
+    name: "§6{name}"
+    material: 'skull_item'
+    data: 3
+    type: "joinParty"
+    lore:
+      - ""
+      - "§f队伍人数 §7{current}/{max}"
+      - "§f队员列表"
+      - "§f{members}"
+      - ""
+      - "§6点击 §f申请进入队伍"

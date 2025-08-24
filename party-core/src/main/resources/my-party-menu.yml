@@ -1,0 +1,82 @@
+MenuName: "我的队伍"
+Title: "§e§l我的队伍"
+Layout:
+  - "#########"
+  - "#### ####"
+  - "#       #"
+  - "#########"
+  - "A#BD#FE#C"
+
+Buttons:
+  '#':
+    name: "§8—"
+    data: 11
+    material: 'stained_glass_pane'
+    lore: []
+  'A':
+    name: "§7◀ 上一页"
+    material: 'paper'
+    type: "lastPage"
+    lore: []
+  'B':
+    name: "§6退出队伍"
+    material: 'WOOD_DOOR'
+    type: "quitParty"
+    lore:
+      - "§7点击离开队伍"
+  'D':
+    name: "§6解散队伍"
+    material: 'redstone'
+    type: "disbandParty"
+    lore:
+      - "§7点击解散队伍"
+  'E':
+    name: "§6申请列表"
+    material: 'book'
+    type: "joinApplicationList"
+    lore:
+      - "§7点击查看加入队伍的申请列表"
+  'F':
+    name: "§6队伍列表"
+    material: 'slime_ball'
+    type: "partyList"
+    lore:
+      - "§7点击查看所有队伍列表"
+  'C':
+    name: "§7下一页 ▶"
+    material: 'paper'
+    type: "nextPage"
+    lore: []
+  #
+  leader:
+    name: "§6✦ {name} §l[队长]"
+    material: 'gold_helmet'
+    lore:
+      - "§8├ §f等级: §e{level}"
+      - "§8├ §f生命: §c❤ {health}"
+      - "§8└ §f在线状态: §a✓ 在线"
+    # 玩家离线时显示的lore
+    offline-lore:
+      - "§8├ §f上次在线: §7{last_online}"
+      - "§8└ §f状态: §8✗ 离线"
+  member:
+    name: "§f{name}"
+    material: 'skull_item'
+    data: 3
+    lore:
+      - "§8├ §f等级: §e{level}"
+      - "§8├ §f生命: §c❤ {health}"
+      - "§8└ §f在线状态: §a✓ 在线"
+    offline-lore:
+      - "§8├ §f上次在线: §7{last_online}"
+      - "§8└ §f状态: §8✗ 离线"
+    leader-apply-lore:
+      - ""
+      - "§4⌦ 队长管理操作"
+      - "§cSHIFT + 左键 踢出成员"
+  empty:
+    name: "§a+ 邀请玩家"
+    material: 'barrier'
+    offline-lore:
+      - "§7赶快邀请新成员加入吧"
+      - "§8┃ §f(剩余空位: §e{slots}§f)"

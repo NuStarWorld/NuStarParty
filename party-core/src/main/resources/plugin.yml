@@ -1,0 +1,20 @@
+# noinspection YAMLSchemaValidation
+name: '${name}'
+version: '${version}'
+main: top.nustar.nustarparty.NuStarParty
+authors:
+- NuStar
+depend:
+  - minecraft-next
+softdepend:
+  - DragonCore
+  - GermPlugin
+  - DungeonPlus
+  - NuStarCoreBridge
+  - MythicDungeons
+  - MythicMobs
+  - AttributePlus
+commands:
+  nustarparty:
+    aliases: [nsp]
+

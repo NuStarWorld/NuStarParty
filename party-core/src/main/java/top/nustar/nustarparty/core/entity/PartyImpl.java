@@ -25,7 +25,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
 import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -85,11 +84,10 @@ public class PartyImpl implements Party {
 
     @Override
     public Optional<OfflinePlayer> popJoinApplicant(Predicate<OfflinePlayer> matcher, boolean isAccept) {
-        Optional<OfflinePlayer> popJoinApplicant =
-                joinApplicationList.stream()
-                        .filter(memberUid -> matcher.test(Bukkit.getOfflinePlayer(memberUid)))
-                        .map(Bukkit::getOfflinePlayer)
-                        .findFirst();
+        Optional<OfflinePlayer> popJoinApplicant = joinApplicationList.stream()
+                .filter(memberUid -> matcher.test(Bukkit.getOfflinePlayer(memberUid)))
+                .map(Bukkit::getOfflinePlayer)
+                .findFirst();
         if (popJoinApplicant.isPresent()) {
             OfflinePlayer applicant = popJoinApplicant.get();
             if (isAccept) {
@@ -203,16 +201,12 @@ public class PartyImpl implements Party {
 
     @Override
     public List<OfflinePlayer> getMembers() {
-        return members.stream()
-                .map(Bukkit::getOfflinePlayer)
-                .collect(Collectors.toList());
+        return members.stream().map(Bukkit::getOfflinePlayer).collect(Collectors.toList());
     }
 
     @Override
     public List<OfflinePlayer> getJoinApplicationList() {
-        return joinApplicationList.stream()
-                .map(Bukkit::getOfflinePlayer)
-                .collect(Collectors.toList());
+        return joinApplicationList.stream().map(Bukkit::getOfflinePlayer).collect(Collectors.toList());
     }
 
     @Override

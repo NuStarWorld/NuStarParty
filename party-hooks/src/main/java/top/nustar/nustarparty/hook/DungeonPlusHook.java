@@ -24,6 +24,8 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -41,10 +43,7 @@ import team.idealstate.sugar.next.context.annotation.component.Subscriber;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarparty.api.entity.Party;
-import top.nustar.nustarparty.api.event.AcceptJoinApplicationEvent;
-import top.nustar.nustarparty.api.event.DisbandPartyEvent;
-import top.nustar.nustarparty.api.event.KickPartyEvent;
-import top.nustar.nustarparty.api.event.QuitPartyEvent;
+import top.nustar.nustarparty.api.event.*;
 import top.nustar.nustarparty.api.next.NuStarPartyProperties;
 import top.nustar.nustarparty.api.service.PartyService;
 
@@ -145,6 +144,9 @@ public class DungeonPlusHook implements Listener {
                 .convert(OfflinePlayer::getPlayer)
                 .when(Objects::nonNull)
                 .run(it -> {
+                    JoinPartyDungeonEvent.Pre pre = new JoinPartyDungeonEvent.Pre(it, joinParty);
+                    Bukkit.getPluginManager().callEvent(pre);
+                    if (pre.isCancelled()) return;
                     boolean start = true;
                     if (!leaderDungeon
                             .getDungeonContent()
@@ -168,6 +170,7 @@ public class DungeonPlusHook implements Listener {
                     it.teleport(location, PlayerTeleportEvent.TeleportCause.UNKNOWN);
                     DungeonPlus.dungeonManager.setPlayerDungeon(it.getUniqueId(), leaderDungeon);
                     service.getPartyLanguage().getOnTeleportToDungeon().use(it::sendMessage);
+                    Bukkit.getPluginManager().callEvent(new JoinPartyDungeonEvent.After(it, joinParty));
                 });
     }
 

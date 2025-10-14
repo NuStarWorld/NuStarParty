@@ -577,7 +577,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
         sendPlaceholderForPartyList(
                 sender,
                 index,
-                String.format("NuStarParty_PartyMemberName_%s_%s", partyIndex, memberIndex),
+                String.format("NuStarParty_PartyMemberUid_%s_%s", partyIndex, memberIndex),
                 party -> memberIndexInt < 0
                                 || memberIndexInt >= party.getMembers().size()
                         ? "索引不符合成员数量"

@@ -7,6 +7,7 @@ pluginManagement {
             name = "Sonatype-Snapshots"
             url = uri("https://central.sonatype.com/repository/maven-snapshots/")
         }
+        maven("https://maven.nustar.top/repository/nustar-public/")
         gradlePluginPortal()
     }
 }

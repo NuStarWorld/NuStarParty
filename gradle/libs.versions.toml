@@ -7,6 +7,9 @@ nustar-gui = "1.0.0-SNAPSHOT"
 nustar-corebridge = "1.0.0-20250804.131318-10"
 bstats = "3.0.2"
 kotlin-stdlib = "1.5.20"
+dungeonplus = "1.4.2"
+monsterapi = "3.2.4"
+mythicdungeons = "2.0.0"
 
 [plugins]
 
@@ -19,3 +22,6 @@ lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" 
 spigot-api = { group = "org.spigotmc", name = "spigot-api", version.ref = "spigot-api" }
 placeholderapi = { group = "me.clip", name = "placeholderapi", version.ref = "placeholderapi" }
 minecraft-next-spigot = { group = "team.idealstate.minecraft", name = "minecraft-next-spigot", version.ref = "minecraft-next-spigot" }
+dungeonplus = { group = "org.serverct.ersha.dungeon", name = "DungeonPlus", version.ref = "dungeonplus"}
+monsterapi = { group = "me.monsterxz.monsterlib", name = "MonsterAPI", version.ref = "monsterapi"}
+mythicdungeons = { group = "net.playavalon.mythicdungeons", name = "MythicDungeons", version.ref = "mythicdungeons"}

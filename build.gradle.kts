@@ -72,7 +72,7 @@ allprojects {
         }
         maven {
             name = "nustar-repo"
-            url = uri("https://maven.nustar.top/repository/nustar-snapshots/")
+            url = uri("https://maven.nustar.top/repository/nustar-public/")
         }
         mavenCentral()
     }
@@ -93,6 +93,9 @@ allprojects {
         compileOnly(rootProject.libs.kotlin.stdlib)
         compileOnly(rootProject.libs.minecraft.next.spigot)
         compileOnly(rootProject.libs.nustar.corebridge)
+        compileOnly(rootProject.libs.mythicdungeons)
+        compileOnly(rootProject.libs.dungeonplus)
+        compileOnly(rootProject.libs.monsterapi)
         compileOnly(fileTree(File(rootProject.projectDir, "libraries")))
         compileOnly(rootProject.libs.lombok)
         compileOnly(rootProject.libs.lombok)

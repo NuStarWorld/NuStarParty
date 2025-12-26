@@ -2,3 +2,6 @@ debug: false
 
 # 队伍最大人数
 party-max-size: 25
+
+# 是否开启中途加入地牢功能
+enable-join-dungeon-midway: false

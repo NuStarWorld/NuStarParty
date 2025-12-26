@@ -528,6 +528,11 @@ public class PartyServiceImpl implements PartyService {
                 .run(it -> it.forEach(onlinePlayer -> language.use(variables, onlinePlayer::sendMessage)));
     }
 
+    @Override
+    public boolean isEnableJoinDungeonMidway() {
+        return partyConfiguration.isEnableJoinDungeonMidway();
+    }
+
     @Autowired
     public void setPartyManager(PartyManager partyManager) {
         this.partyManager = partyManager;

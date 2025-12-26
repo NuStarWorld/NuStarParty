@@ -216,7 +216,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
         List<Player> collect = partyService.getNonPartyPlayers().stream()
                 .filter(player ->
                         !player.getUniqueId().equals(sender.getSender().getUniqueId()))
-                .filter(player -> player.getName().contains(playerName))
+                .filter(player -> player.getName().toLowerCase().contains(playerName.toLowerCase()))
                 .collect(Collectors.toList());
         Map<String, String> map = new HashMap<>();
         map.put("NuStarParty_FuzzySearchSize", String.valueOf(collect.size()));

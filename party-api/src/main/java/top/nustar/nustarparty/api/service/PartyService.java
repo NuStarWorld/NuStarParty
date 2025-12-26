@@ -241,4 +241,10 @@ public interface PartyService {
      * @return 玩家列表
      */
     List<Player> getNonPartyPlayers();
+
+    /**
+     * 是否开启地牢中途加入功能
+     * @return 是否开启
+     */
+    boolean isEnableJoinDungeonMidway();
 }

@@ -39,4 +39,7 @@ public class PartyConfiguration {
     private int partyMaxSize;
 
     private boolean debug;
+
+    @JsonProperty("enable-join-dungeon-midway")
+    private boolean enableJoinDungeonMidway;
 }

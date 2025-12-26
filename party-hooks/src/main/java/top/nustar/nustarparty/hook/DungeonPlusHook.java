@@ -134,6 +134,7 @@ public class DungeonPlusHook implements Listener {
 
     @EventHandler
     public void on(AcceptJoinApplicationEvent.After event) {
+        if (!service.isEnableJoinDungeonMidway()) return;
         Party joinParty = event.getJoinParty();
         Dungeon leaderDungeon = DungeonPlus.dungeonManager.getDungeon(joinParty.getLeaderUid());
         if (leaderDungeon == null || leaderDungeon.getDungeonEditMode()) return;

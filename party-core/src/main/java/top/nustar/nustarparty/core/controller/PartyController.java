@@ -107,19 +107,19 @@ public class PartyController implements Command, ContextAware, Initializable {
         player.sendMessage("§6§l◆========== §e队伍系统帮助 §6§l==========◆");
 
         // 命令列表
-        player.sendMessage(formatCommand("/nsparty help", "显示本帮助"));
-        player.sendMessage(formatCommand("/nsparty reload", "重载插件配置"));
-        player.sendMessage(formatCommand("/nsparty openPartyMenu", "打开公共队伍菜单"));
-        player.sendMessage(formatCommand("/nsparty openMyPartyMenu", "打开我的队伍管理"));
-        player.sendMessage(formatCommand("/nsparty openJoinApplicationMenu", "打开队伍申请列表菜单"));
-        player.sendMessage(formatCommand("/nsparty openInviteMenu", "打开邀请列表菜单"));
-        player.sendMessage(formatCommand("/nsparty openPlayerListMenu", "打开玩家列表菜单"));
-        player.sendMessage(formatCommand("/nsparty createParty", "创建新队伍"));
-        player.sendMessage(formatCommand("/nsparty quitParty", "退出当前队伍"));
-        player.sendMessage(formatCommand("/nsparty disband", "解散当前队伍"));
-        player.sendMessage(formatCommand("/nsparty invitePlayer <玩家> <理由>", "邀请玩家加入"));
-        player.sendMessage(formatCommand("/nsparty kickMember <玩家> <理由>", "踢出指定成员"));
-        player.sendMessage(formatCommand("/nsparty acceptJoinRequest <玩家>", "接受加入请求"));
+        player.sendMessage(formatCommand("/nustarparty help", "显示本帮助"));
+        player.sendMessage(formatCommand("/nustarparty reload", "重载插件配置"));
+        player.sendMessage(formatCommand("/nustarparty openPartyMenu", "打开公共队伍菜单"));
+        player.sendMessage(formatCommand("/nustarparty openMyPartyMenu", "打开我的队伍管理"));
+        player.sendMessage(formatCommand("/nustarparty openJoinApplicationMenu", "打开队伍申请列表菜单"));
+        player.sendMessage(formatCommand("/nustarparty openInviteMenu", "打开邀请列表菜单"));
+        player.sendMessage(formatCommand("/nustarparty openPlayerListMenu", "打开玩家列表菜单"));
+        player.sendMessage(formatCommand("/nustarparty createParty", "创建新队伍"));
+        player.sendMessage(formatCommand("/nustarparty quitParty", "退出当前队伍"));
+        player.sendMessage(formatCommand("/nustarparty disband", "解散当前队伍"));
+        player.sendMessage(formatCommand("/nustarparty invitePlayer <玩家> <理由>", "邀请玩家加入"));
+        player.sendMessage(formatCommand("/nustarparty kickMember <玩家> <理由>", "踢出指定成员"));
+        player.sendMessage(formatCommand("/nustarparty acceptJoinRequest <玩家>", "接受加入请求"));
 
         // 底部提示
         player.sendMessage("§7提示: §8< > §7表示必填参数，命令区分大小写");

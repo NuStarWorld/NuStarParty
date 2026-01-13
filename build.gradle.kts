@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "top.nustar.nustarparty"
-version = "1.0.3"
+version = "1.1.0"
 
 allprojects {
     if (!project.buildFile.exists()) {

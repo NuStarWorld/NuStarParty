@@ -29,6 +29,7 @@ import top.nustar.nustarcorebridge.api.packet.PacketProcessor;
 import top.nustar.nustarcorebridge.api.packet.annotations.PacketArgument;
 import top.nustar.nustarcorebridge.api.packet.annotations.PacketHandler;
 import top.nustar.nustarcorebridge.api.packet.annotations.PacketName;
+import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
 import top.nustar.nustarcorebridge.api.packet.sender.PacketSender;
 import top.nustar.nustarcorebridge.api.service.PlaceholderService;
 import top.nustar.nustarcorebridge.converter.UidConverter;
@@ -61,111 +62,111 @@ public class PartyPacket implements PacketProcessor {
         this.placeholderService = placeholderService;
     }
 
-    private void executeParty(PacketSender<Player> sender, String placeholder, Function<Player, Boolean> function) {
+    private void executeParty(PacketSender<Player> packetSender, String placeholder, Function<Player, Boolean> function) {
         try {
-            if (function.call(sender.getSender())) {
-                placeholderService.sendPlaceholder(sender.getSender(), placeholder, "1");
+            if (function.call(packetSender.getSender())) {
+                placeholderService.sendPlaceholder(packetSender.getSender(), placeholder, "1");
             } else {
-                placeholderService.sendPlaceholder(sender.getSender(), placeholder, "0");
+                placeholderService.sendPlaceholder(packetSender.getSender(), placeholder, "0");
             }
         } catch (Throwable e) {
             Log.error(e);
-            placeholderService.sendPlaceholder(sender.getSender(), placeholder, "执行失败");
+            placeholderService.sendPlaceholder(packetSender.getSender(), placeholder, "执行失败");
         }
     }
 
     @PacketHandler(value = "createParty", description = "创建队伍")
-    public void createParty(PacketSender<Player> sender) {
-        executeParty(sender, "NuStarParty_CreateParty", partyService::createParty);
+    public void createParty(PacketContext<Player> packetContext) {
+        executeParty(packetContext.getPacketSender(), "NuStarParty_CreateParty", partyService::createParty);
     }
 
     @PacketHandler(value = "quitParty", description = "退出队伍")
-    public void quitParty(PacketSender<Player> sender) {
-        executeParty(sender, "NuStarParty_QuitParty", partyService::quitParty);
+    public void quitParty(PacketContext<Player> packetContext) {
+        executeParty(packetContext.getPacketSender(), "NuStarParty_QuitParty", partyService::quitParty);
     }
 
     @PacketHandler(value = "disbandParty", description = "解散队伍")
-    public void disbandParty(PacketSender<Player> sender) {
-        executeParty(sender, "NuStarParty_DisbandParty", partyService::disbandParty);
+    public void disbandParty(PacketContext<Player> packetContext) {
+        executeParty(packetContext.getPacketSender(), "NuStarParty_DisbandParty", partyService::disbandParty);
     }
 
     @PacketHandler(value = "addJoinPartyRequest", description = "申请加入队伍")
     public void addJoinPartyRequest(
-            PacketSender<Player> sender,
+            PacketContext<Player> packetContext,
             @PacketArgument(value = "partyUid", description = "队伍UUID", converter = UidConverter.class) UUID partyUid) {
         executeParty(
-                sender,
+                packetContext.getPacketSender(),
                 "NuStarParty_AddJoinPartyRequest",
                 player -> partyService.addJoinPartyRequest(player, partyUid));
     }
 
     @PacketHandler(value = "acceptJoinRequest", description = "接受加入队伍请求")
     public void acceptJoinRequest(
-            PacketSender<Player> sender,
+            PacketContext<Player> packetContext,
             @PacketArgument(value = "requesterName", description = "通过申请者的加入请求(名称)") String requesterName) {
         executeParty(
-                sender,
+                packetContext.getPacketSender(),
                 "NuStarParty_AcceptJoinRequest",
                 player -> partyService.acceptJoinApplication(player, requesterName));
     }
 
     @PacketHandler(value = "kickMember", description = "踢出队伍成员")
     public void kickMember(
-            PacketSender<Player> sender,
+            PacketContext<Player> packetContext,
             @PacketArgument(value = "memberName", description = "被踢的玩家名称") String memberName,
             @PacketArgument(value = "kickReason", description = "踢出原因") String kickReason) {
         executeParty(
-                sender, "NuStarParty_KickMember", player -> partyService.kickMember(player, memberName, kickReason));
+                packetContext.getPacketSender(), "NuStarParty_KickMember", player -> partyService.kickMember(player, memberName, kickReason));
     }
 
     @PacketHandler(value = "isInSameParty", description = "检查两个玩家是否在同一个队伍中")
     public void isInSameParty(
-            PacketSender<Player> sender,
+            PacketContext<Player> packetContext,
             @PacketArgument(value = "playerUid1", description = "被检查的玩家1的 UUID", converter = UidConverter.class)
                     UUID playerUid1,
             @PacketArgument(value = "playerUid2", description = "被检查的玩家2的 UUID", converter = UidConverter.class)
                     UUID playerUid2) {
-        executeParty(sender, "NuStarParty_IsInSameParty", player -> partyService.isInSameParty(playerUid1, playerUid2));
+        executeParty(packetContext.getPacketSender(), "NuStarParty_IsInSameParty", player -> partyService.isInSameParty(playerUid1, playerUid2));
     }
 
     // TODO 待实现
     @PacketHandler(value = "invitePlayer", description = "邀请玩家加入队伍")
     public void invitePlayer(
-            PacketSender<Player> sender,
+            PacketContext<Player> packetContext,
             @PacketArgument(value = "playerName", description = "被邀请的玩家名称") String playerName) {
-        sender.sendMessage("§a§l[!] §6NuStarParty §f- 玩家已邀请");
+        packetContext.getPacketSender().sendMessage("§a§l[!] §6NuStarParty §f- 玩家已邀请");
     }
 
     @PacketHandler(value = "transferLeader", description = "转让队长")
     public void transferLeader(
-            PacketSender<Player> sender,
+            PacketContext<Player> packetContext,
             @PacketArgument(value = "playerName", description = "被转让的玩家名称") String playerName) {
-        sender.sendMessage("§a§l[!] §6NuStarParty §f- 玩家已转让");
+        packetContext.getPacketSender().sendMessage("§a§l[!] §6NuStarParty §f- 玩家已转让");
     }
 
     @PacketHandler(value = "mergeParty", description = "合并队伍")
     public void mergeParty(
-            PacketSender<Player> sender,
+            PacketContext<Player> packetContext,
             @PacketArgument(value = "partyName", description = "要合并的队伍名称") String partyName) {
-        sender.sendMessage("§a§l[!] §6NuStarParty §f- 队伍已合并");
+        packetContext.getPacketSender().sendMessage("§a§l[!] §6NuStarParty §f- 队伍已合并");
     }
 
     @PacketHandler(value = "changePickupMode", description = "改变掉落物拾取模式")
     public void changePickupMode(
-            PacketSender<Player> sender, @PacketArgument(value = "mode", description = "掉落物拾取模式") String mode) {
-        sender.sendMessage("§a§l[!] §6NuStarParty §f- 掉落物拾取模式已改变");
+            PacketContext<Player> packetContext, @PacketArgument(value = "mode", description = "掉落物拾取模式") String mode) {
+        packetContext.getPacketSender().sendMessage("§a§l[!] §6NuStarParty §f- 掉落物拾取模式已改变");
     }
 
     @PacketHandler(value = "setPartyDestination", description = "设置队伍目的地")
     public void setPartyDestination(
-            PacketSender<Player> sender,
+            PacketContext<Player> packetContext,
             @PacketArgument(value = "destination", description = "目标") String destination,
             @PacketArgument(value = "notify", description = "是否通知组员") String type) {
-        sender.sendMessage("§a§l[!] §6NuStarParty §f- 队伍目的地已设置");
+        packetContext.getPacketSender().sendMessage("§a§l[!] §6NuStarParty §f- 队伍目的地已设置");
     }
 
     @PacketHandler(value = "sendGatherRequest", description = "发送队伍集合请求")
-    public void sendGatherRequest(PacketSender<Player> sender) {
-        sender.sendMessage("§a§l[!] §6NuStarParty §f- 队伍集合请求已发送");
+    public void sendGatherRequest(PacketContext<Player> packetContext) {
+        packetContext.getPacketSender().sendMessage("§a§l[!] §6NuStarParty §f- 队伍集合请求已发送");
     }
 }

@@ -2,7 +2,7 @@
 lombok = "1.18.38"
 spigot-api = "1.12.2-R0.1-SNAPSHOT"
 placeholderapi = "2.11.6"
-minecraft-next-spigot = "0.1.0-20250722.144016-1"
+minecraft-next-spigot = "0.1.0-SNAPSHOT"
 nustar-gui = "1.0.0-SNAPSHOT"
 nustar-corebridge = "2.0.0-SNAPSHOT"
 bstats = "3.0.2"

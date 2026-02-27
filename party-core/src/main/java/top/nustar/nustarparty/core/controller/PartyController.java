@@ -67,7 +67,7 @@ public class PartyController implements Command, ContextAware, Initializable {
     private volatile PartyService partyService;
     private volatile Context context;
 
-    @CommandHandler(value = "reload", permission = "NuStarPartyAdminPerm")
+    @CommandHandler(value = "reload", permission = "NuStarPartyAdminPerm", description = "重载插件配置")
     @NotNull
     public CommandResult reload() {
         try {
@@ -96,42 +96,12 @@ public class PartyController implements Command, ContextAware, Initializable {
         return CommandResult.success("重载成功");
     }
 
-    @NotNull
-    @CommandHandler(value = "help", permission = "NuStarPartyAdminPerm")
-    public CommandResult help(@NotNull CommandContext context) {
-        UUID uniqueId = context.getSender().getUniqueId();
-        Player player = Bukkit.getPlayer(uniqueId);
-        if (player == null) return CommandResult.failure();
-
-        // 标题分隔线
-        player.sendMessage("§6§l◆========== §e队伍系统帮助 §6§l==========◆");
-
-        // 命令列表
-        player.sendMessage(formatCommand("/nustarparty help", "显示本帮助"));
-        player.sendMessage(formatCommand("/nustarparty reload", "重载插件配置"));
-        player.sendMessage(formatCommand("/nustarparty openPartyMenu", "打开公共队伍菜单"));
-        player.sendMessage(formatCommand("/nustarparty openMyPartyMenu", "打开我的队伍管理"));
-        player.sendMessage(formatCommand("/nustarparty openJoinApplicationMenu", "打开队伍申请列表菜单"));
-        player.sendMessage(formatCommand("/nustarparty openInviteMenu", "打开邀请列表菜单"));
-        player.sendMessage(formatCommand("/nustarparty openPlayerListMenu", "打开玩家列表菜单"));
-        player.sendMessage(formatCommand("/nustarparty createParty", "创建新队伍"));
-        player.sendMessage(formatCommand("/nustarparty quitParty", "退出当前队伍"));
-        player.sendMessage(formatCommand("/nustarparty disband", "解散当前队伍"));
-        player.sendMessage(formatCommand("/nustarparty invitePlayer <玩家> <理由>", "邀请玩家加入"));
-        player.sendMessage(formatCommand("/nustarparty kickMember <玩家> <理由>", "踢出指定成员"));
-        player.sendMessage(formatCommand("/nustarparty acceptJoinRequest <玩家>", "接受加入请求"));
-
-        // 底部提示
-        player.sendMessage("§7提示: §8< > §7表示必填参数，命令区分大小写");
-        return CommandResult.success();
-    }
-
     private String formatCommand(String cmd, String description) {
         return "§a" + cmd + " §8┃ §7" + description;
     }
 
     @NotNull
-    @CommandHandler(value = "openPlayerListMenu", permission = "NuStarPartyPlayerPerm")
+    @CommandHandler(value = "openPlayerListMenu", permission = "NuStarPartyPlayerPerm", description = "打开玩家列表菜单")
     public CommandResult openPlayerListMenu(@NotNull CommandContext context) {
         try {
             getPlayer(context.getSender()).ifPresent(player -> partyService.openPlayerListMenu(player));
@@ -143,7 +113,7 @@ public class PartyController implements Command, ContextAware, Initializable {
     }
 
     @NotNull
-    @CommandHandler(value = "openJoinApplicationMenu", permission = "NuStarPartyPlayerPerm")
+    @CommandHandler(value = "openJoinApplicationMenu", permission = "NuStarPartyPlayerPerm", description = "打开队伍申请列表菜单")
     public CommandResult openPartyJoinApplicationMenu(@NotNull CommandContext context) {
         try {
             getPlayer(context.getSender()).ifPresent(player -> partyService.openJoinApplicationMenu(player));
@@ -155,7 +125,7 @@ public class PartyController implements Command, ContextAware, Initializable {
     }
 
     @NotNull
-    @CommandHandler(value = "openInviteMenu", permission = "NuStarPartyPlayerPerm")
+    @CommandHandler(value = "openInviteMenu", permission = "NuStarPartyPlayerPerm", description = "打开邀请列表菜单")
     public CommandResult openInviteMenu(@NotNull CommandContext context) {
         try {
             getPlayer(context.getSender()).ifPresent(player -> partyService.openInviteApplicationMenu(player));
@@ -167,7 +137,7 @@ public class PartyController implements Command, ContextAware, Initializable {
     }
 
     @NotNull
-    @CommandHandler(value = "openPartyMenu", permission = "NuStarPartyPlayerPerm")
+    @CommandHandler(value = "openPartyMenu", permission = "NuStarPartyPlayerPerm", description = "打开公共队伍菜单")
     public CommandResult openPartyMenu(@NotNull CommandContext context) {
         try {
             getPlayer(context.getSender()).ifPresent(player -> partyService.openPartyMenu(player));
@@ -178,7 +148,7 @@ public class PartyController implements Command, ContextAware, Initializable {
         return CommandResult.success();
     }
 
-    @CommandHandler(value = "openMyPartyMenu", permission = "NuStarPartyPlayerPerm")
+    @CommandHandler(value = "openMyPartyMenu", permission = "NuStarPartyPlayerPerm", description = "打开我的队伍管理")
     public CommandResult openMyPartyMenu(@NotNull CommandContext context) {
         try {
             getPlayer(context.getSender()).ifPresent(player -> partyService.openMyPartyMenu(player));
@@ -189,7 +159,7 @@ public class PartyController implements Command, ContextAware, Initializable {
         return CommandResult.success();
     }
 
-    @CommandHandler(value = "acceptJoinRequest {request}", permission = "NuStarPartyPlayerPerm")
+    @CommandHandler(value = "acceptJoinRequest {request}", permission = "NuStarPartyPlayerPerm", description = "接受加入请求")
     @NotNull
     public CommandResult acceptJoinRequest(
             @NotNull CommandContext context,
@@ -204,7 +174,7 @@ public class PartyController implements Command, ContextAware, Initializable {
     }
 
     @NotNull
-    @CommandHandler(value = "kickMember {memberName} {kickReason}", permission = "NuStarPartyPlayerPerm")
+    @CommandHandler(value = "kickMember {memberName} {kickReason}", permission = "NuStarPartyPlayerPerm", description = "踢出指定成员")
     public CommandResult kickMember(
             @NotNull CommandContext context,
             @NotNull @CommandArgument(completer = "completeMemberName") String memberName,
@@ -219,7 +189,7 @@ public class PartyController implements Command, ContextAware, Initializable {
     }
 
     @NotNull
-    @CommandHandler(value = "disband", permission = "NuStarPartyPlayerPerm")
+    @CommandHandler(value = "disband", permission = "NuStarPartyPlayerPerm", description = "解散当前队伍")
     public CommandResult disband(@NotNull CommandContext context) {
         try {
             return getPlayer(context.getSender())
@@ -233,7 +203,7 @@ public class PartyController implements Command, ContextAware, Initializable {
     }
 
     @NotNull
-    @CommandHandler(value = "quitParty", permission = "NuStarPartyPlayerPerm")
+    @CommandHandler(value = "quitParty", permission = "NuStarPartyPlayerPerm", description = "退出当前队伍")
     public CommandResult quitParty(@NotNull CommandContext context) {
         try {
             return getPlayer(context.getSender())
@@ -247,7 +217,7 @@ public class PartyController implements Command, ContextAware, Initializable {
     }
 
     @NotNull
-    @CommandHandler(value = "createParty", permission = "NuStarPartyPlayerPerm")
+    @CommandHandler(value = "createParty", permission = "NuStarPartyPlayerPerm", description = "创建新队伍")
     public CommandResult createParty(@NotNull CommandContext context) {
         try {
             return getPlayer(context.getSender())
@@ -261,7 +231,7 @@ public class PartyController implements Command, ContextAware, Initializable {
     }
 
     @NotNull
-    @CommandHandler(value = "invitePlayer {invitedPlayer} {inviteReason}", permission = "NuStarPartyPlayerPerm")
+    @CommandHandler(value = "invitePlayer {invitedPlayer} {inviteReason}", permission = "NuStarPartyPlayerPerm", description = "邀请玩家加入")
     public CommandResult invitePlayer(
             @NotNull CommandContext context,
             @NotNull @CommandArgument(completer = "completePlayer", converter = "convertToPlayer") Player invitedPlayer,
@@ -278,7 +248,7 @@ public class PartyController implements Command, ContextAware, Initializable {
     }
 
     @NotNull
-    @CommandHandler(value = "acceptInviteRequest {inviterName}", permission = "NuStarPartyPlayerPerm")
+    @CommandHandler(value = "acceptInviteRequest {inviterName}", permission = "NuStarPartyPlayerPerm", description = "接受邀请请求")
     public CommandResult acceptInviteRequest(
             @NotNull CommandContext context,
             @NotNull @CommandArgument(completer = "completeInviteRequestName") String inviterName) {
@@ -294,7 +264,7 @@ public class PartyController implements Command, ContextAware, Initializable {
     }
 
     @NotNull
-    @CommandHandler(value = "refuseInviteRequest {inviterName}", permission = "NuStarPartyPlayerPerm")
+    @CommandHandler(value = "refuseInviteRequest {inviterName}", permission = "NuStarPartyPlayerPerm", description = "拒绝邀请请求")
     public CommandResult refuseInviteRequest(
             @NotNull CommandContext context,
             @NotNull @CommandArgument(completer = "completeInviteRequestName") String inviterName) {

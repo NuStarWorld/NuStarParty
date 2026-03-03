@@ -53,6 +53,9 @@ import top.nustar.nustarparty.core.utils.StringUtil;
         properties = @DependsOn.Property(key = NuStarPartyProperties.IS_SUB_PLUGIN, value = "false"))
 @SuppressWarnings("unused")
 public class PartyPlaceholderPacket implements PacketProcessor {
+
+    private static final long PACKET_COOLDOWN = 500;
+
     private volatile PartyService partyService;
 
     private volatile PlaceholderService placeholderService;
@@ -69,7 +72,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
         this.placeholderService = placeholderService;
     }
 
-    @PacketHandler(value = "refreshPlayerListPlaceholder", description = "刷新玩家列表变量")
+    @PacketHandler(value = "refreshPlayerListPlaceholder", description = "刷新玩家列表变量", cooldown = PACKET_COOLDOWN)
     public void refreshPlayerListPlaceholder(PacketContext<Player> packetContext) {
         getPlayerListSize(packetContext);
         List<Player> collect = partyService.getNonPartyPlayers().stream()
@@ -82,7 +85,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
         }
     }
 
-    @PacketHandler(value = "refreshJoinApplicationPlaceholder", description = "刷新加入申请变量")
+    @PacketHandler(value = "refreshJoinApplicationPlaceholder", description = "刷新加入申请变量", cooldown = PACKET_COOLDOWN)
     public void refreshJoinApplicationPlaceholder(PacketContext<Player> packetContext) {
         Optional<Party> partyOptional = partyService.getParty(packetContext.getPacketSender().getUid());
         partyOptional.ifPresent(party -> {
@@ -94,7 +97,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
         });
     }
 
-    @PacketHandler(value = "refreshInviteApplicationPlaceholder", description = "刷新邀请申请变量")
+    @PacketHandler(value = "refreshInviteApplicationPlaceholder", description = "刷新邀请申请变量", cooldown = PACKET_COOLDOWN)
     public void refreshInviteApplicationPlaceholder(PacketContext<Player> packetContext) {
         getPartyInviteApplicationSize(packetContext);
         Optional<Invite> inviteOptional =
@@ -108,7 +111,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
         });
     }
 
-    @PacketHandler(value = "refreshMyPartyPlaceholder", description = "刷新我的队伍变量")
+    @PacketHandler(value = "refreshMyPartyPlaceholder", description = "刷新我的队伍变量", cooldown = PACKET_COOLDOWN)
     public void refreshMyPartyPlaceholder(PacketContext<Player> packetContext) {
         getMyPartyEmptyPositions(packetContext);
         getMyPartyIsFull(packetContext);
@@ -120,7 +123,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
         getMyPartyName(packetContext);
     }
 
-    @PacketHandler(value = "refreshMyPartyMemberPlaceholder", description = "刷新我的队伍所有成员的变量")
+    @PacketHandler(value = "refreshMyPartyMemberPlaceholder", description = "刷新我的队伍所有成员的变量", cooldown = PACKET_COOLDOWN)
     public void refreshMyPartyMemberPlaceholder(PacketContext<Player> packetContext) {
         Optional<Party> partyOptional = partyService.getParty(packetContext.getPacketSender().getUid());
         partyOptional.ifPresent(party -> {
@@ -131,7 +134,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
         });
     }
 
-    @PacketHandler(value = "refreshPartyMemberPlaceholder", description = "刷新指定索引队伍的所有成员变量")
+    @PacketHandler(value = "refreshPartyMemberPlaceholder", description = "刷新指定索引队伍的所有成员变量", cooldown = PACKET_COOLDOWN)
     public void refreshPartyMemberPlaceholder(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "partyIndex", description = "队伍索引") String partyIndex) {
@@ -145,7 +148,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
         }
     }
 
-    @PacketHandler(value = "refreshAllPlaceholder", description = "刷新所有队伍变量")
+    @PacketHandler(value = "refreshAllPlaceholder", description = "刷新所有队伍变量", cooldown = PACKET_COOLDOWN)
     public void refreshAllPartyPlaceholder(PacketContext<Player> packetContext) {
         getPartyListSize(packetContext);
         int partyListSize = partyService.getPartyList().size();
@@ -209,7 +212,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
         });
     }
 
-    @PacketHandler(value = "playerFuzzySearch", description = "模糊搜索玩家")
+    @PacketHandler(value = "playerFuzzySearch", description = "模糊搜索玩家", cooldown = PACKET_COOLDOWN)
     public void playerFuzzySearch(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "playerName", description = "玩家名称") String playerName) {
@@ -229,12 +232,12 @@ public class PartyPlaceholderPacket implements PacketProcessor {
         placeholderService.sendPlaceholderMap(packetContext.getPacketSender().getSender(), map);
     }
 
-    @PacketHandler(value = "removeAllPlaceholder", description = "移除所有队伍变量")
+    @PacketHandler(value = "removeAllPlaceholder", description = "移除所有队伍变量", cooldown = PACKET_COOLDOWN)
     public void removeAllPlaceholder(PacketContext<Player> packetContext) {
         placeholderService.removePlaceholder(packetContext.getPacketSender().getSender(), "NuStarParty", true);
     }
 
-    @PacketHandler(value = "getPlayerListSize", description = "获取未加入队伍的玩家数量")
+    @PacketHandler(value = "getPlayerListSize", description = "获取未加入队伍的玩家数量", cooldown = PACKET_COOLDOWN)
     public void getPlayerListSize(PacketContext<Player> packetContext) {
         List<Player> collect = partyService.getNonPartyPlayers().stream()
                 .filter(player ->
@@ -244,7 +247,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                 packetContext.getPacketSender().getSender(), "NuStarParty_PlayerListSize", String.valueOf(collect.size()));
     }
 
-    @PacketHandler(value = "getPlayerListUid", description = "获取未加入队伍的某个索引的玩家 UUID")
+    @PacketHandler(value = "getPlayerListUid", description = "获取未加入队伍的某个索引的玩家 UUID", cooldown = PACKET_COOLDOWN)
     public void getPlayerListUid(
             PacketContext<Player> packetContext, @PacketArgument(value = "index", description = "索引") String index) {
         int indexInt = Integer.parseInt(index);
@@ -260,7 +263,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                         : collect.get(indexInt).getUniqueId().toString());
     }
 
-    @PacketHandler(value = "getPlayerListName", description = "获取未加入队伍的某个索引的玩家名称")
+    @PacketHandler(value = "getPlayerListName", description = "获取未加入队伍的某个索引的玩家名称", cooldown = PACKET_COOLDOWN)
     public void getPlayerListName(
             PacketContext<Player> packetContext, @PacketArgument(value = "index", description = "索引") String index) {
         int indexInt = Integer.parseInt(index);
@@ -276,7 +279,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                         : collect.get(indexInt).getName());
     }
 
-    @PacketHandler(value = "getMyPartyJoinApplicationSize", description = "获取我的队伍的申请请求数量")
+    @PacketHandler(value = "getMyPartyJoinApplicationSize", description = "获取我的队伍的申请请求数量", cooldown = PACKET_COOLDOWN)
     public void getMyPartyJoinApplicationSize(PacketContext<Player> packetContext) {
         sendPlaceholderForMyParty(
                 packetContext,
@@ -284,7 +287,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                 party -> String.valueOf(party.getJoinApplicationList().size()));
     }
 
-    @PacketHandler(value = "getPartyInviteApplicationSize", description = "获取队伍的邀请请求数量")
+    @PacketHandler(value = "getPartyInviteApplicationSize", description = "获取队伍的邀请请求数量", cooldown = PACKET_COOLDOWN)
     public void getPartyInviteApplicationSize(PacketContext<Player> packetContext) {
         sendPlaceholderForInvite(
                 packetContext,
@@ -292,7 +295,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                 invite -> String.valueOf(invite.getInviteApplications().size()));
     }
 
-    @PacketHandler(value = "getPartyInviteApplicantUid", description = "获取某个索引的队伍邀请请求者的 UUID")
+    @PacketHandler(value = "getPartyInviteApplicantUid", description = "获取某个索引的队伍邀请请求者的 UUID", cooldown = PACKET_COOLDOWN)
     public void getPartyInviteApplicantUid(
             PacketContext<Player> packetContext, @PacketArgument(value = "index", description = "索引") String index) {
         int indexInt = Integer.parseInt(index);
@@ -309,7 +312,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                                 .toString());
     }
 
-    @PacketHandler(value = "getPartyInviteApplicantName", description = "获取某个索引的队伍邀请请求者的名称")
+    @PacketHandler(value = "getPartyInviteApplicantName", description = "获取某个索引的队伍邀请请求者的名称", cooldown = PACKET_COOLDOWN)
     public void getPartyInviteApplicantName(
             PacketContext<Player> packetContext, @PacketArgument(value = "index", description = "索引") String index) {
         int indexInt = Integer.parseInt(index);
@@ -325,7 +328,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                                 .getName());
     }
 
-    @PacketHandler(value = "getPartyInviteReason", description = "获取某个索引的队伍邀请请求者的邀请理由")
+    @PacketHandler(value = "getPartyInviteReason", description = "获取某个索引的队伍邀请请求者的邀请理由", cooldown = PACKET_COOLDOWN)
     public void getPartyInviteReason(
             PacketContext<Player> packetContext, @PacketArgument(value = "index", description = "索引") String index) {
         int indexInt = Integer.parseInt(index);
@@ -344,7 +347,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                                         12)));
     }
 
-    @PacketHandler(value = "getMyPartyJoinApplicantUid", description = "获取我的队伍某个索引的加入请求者的 UUID")
+    @PacketHandler(value = "getMyPartyJoinApplicantUid", description = "获取我的队伍某个索引的加入请求者的 UUID", cooldown = PACKET_COOLDOWN)
     public void getMyPartyJoinApplicantUid(
             PacketContext<Player> packetContext, @PacketArgument(value = "index", description = "索引") String index) {
         int indexInt = Integer.parseInt(index);
@@ -360,7 +363,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                                 .toString());
     }
 
-    @PacketHandler(value = "getMyPartyJoinApplicantName", description = "获取我的队伍某个索引的加入请求者的名称")
+    @PacketHandler(value = "getMyPartyJoinApplicantName", description = "获取我的队伍某个索引的加入请求者的名称", cooldown = PACKET_COOLDOWN)
     public void getMyPartyJoinApplicantName(
             PacketContext<Player> packetContext, @PacketArgument(value = "index", description = "索引") String index) {
         int indexInt = Integer.parseInt(index);
@@ -373,39 +376,39 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                         : party.getJoinApplicationList().get(indexInt).getName());
     }
 
-    @PacketHandler(value = "getMyPartyLeaderUid", description = "获取我的队伍的队长 UUID")
+    @PacketHandler(value = "getMyPartyLeaderUid", description = "获取我的队伍的队长 UUID", cooldown = PACKET_COOLDOWN)
     public void getMyPartyLeaderUid(PacketContext<Player> packetContext) {
         sendPlaceholderForMyParty(packetContext, "NuStarParty_MyPartyLeaderUid", party -> party.getLeaderUid()
                 .toString());
     }
 
-    @PacketHandler(value = "getMyPartyLeaderName", description = "获取我的队伍的队长名称")
+    @PacketHandler(value = "getMyPartyLeaderName", description = "获取我的队伍的队长名称", cooldown = PACKET_COOLDOWN)
     public void getMyPartyLeaderName(PacketContext<Player> packetContext) {
         sendPlaceholderForMyParty(packetContext, "NuStarParty_MyPartyLeaderName", Party::getLeaderName);
     }
 
-    @PacketHandler(value = "getMyPartySize", description = "获得我的队伍的队伍当前人数")
+    @PacketHandler(value = "getMyPartySize", description = "获得我的队伍的队伍当前人数", cooldown = PACKET_COOLDOWN)
     public void getMyPartySize(PacketContext<Player> packetContext) {
         sendPlaceholderForMyParty(packetContext, "NuStarParty_MyPartySize", party -> String.valueOf(party.getSize()));
     }
 
-    @PacketHandler(value = "getMyPartyEmptyPositions", description = "获得我的队伍的队伍剩余可加入人数")
+    @PacketHandler(value = "getMyPartyEmptyPositions", description = "获得我的队伍的队伍剩余可加入人数", cooldown = PACKET_COOLDOWN)
     public void getMyPartyEmptyPositions(PacketContext<Player> packetContext) {
         sendPlaceholderForMyParty(
                 packetContext, "NuStarParty_MyPartyEmptyPositions", party -> String.valueOf(party.getEmptyPositions()));
     }
 
-    @PacketHandler(value = "getMyPartyMaxSize", description = "获得我的队伍的队伍最大人数")
+    @PacketHandler(value = "getMyPartyMaxSize", description = "获得我的队伍的队伍最大人数", cooldown = PACKET_COOLDOWN)
     public void getMyPartyMaxSize(PacketContext<Player> packetContext) {
         sendPlaceholderForMyParty(packetContext, "NuStarParty_MyPartyMaxSize", party -> String.valueOf(party.getMaxSize()));
     }
 
-    @PacketHandler(value = "getMyPartyIsFull", description = "获得我的队伍是否已满")
+    @PacketHandler(value = "getMyPartyIsFull", description = "获得我的队伍是否已满", cooldown = PACKET_COOLDOWN)
     public void getMyPartyIsFull(PacketContext<Player> packetContext) {
         sendPlaceholderForMyParty(packetContext, "NuStarParty_MyPartyIsFull", party -> String.valueOf(party.isFull()));
     }
 
-    @PacketHandler(value = "getMyPartyIsMember", description = "检查我的队伍是否包含这个名字的玩家")
+    @PacketHandler(value = "getMyPartyIsMember", description = "检查我的队伍是否包含这个名字的玩家", cooldown = PACKET_COOLDOWN)
     public void getMyPartyIsMember(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "memberName", description = "要检查的玩家名称") String memberName) {
@@ -413,7 +416,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                 packetContext, "NuStarParty_MyPartyIsMember", party -> String.valueOf(party.isMember(memberName)));
     }
 
-    @PacketHandler(value = "getMyPartyIsLeader", description = "获取当前玩家是否是队伍的队长")
+    @PacketHandler(value = "getMyPartyIsLeader", description = "获取当前玩家是否是队伍的队长", cooldown = PACKET_COOLDOWN)
     public void getMyPartyIsLeader(PacketContext<Player> packetContext) {
         sendPlaceholderForMyParty(
                 packetContext,
@@ -422,7 +425,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                         party.getLeaderUid().equals(packetContext.getPacketSender().getUid())));
     }
 
-    @PacketHandler(value = "getMyPartyMemberUid", description = "获取我的队伍某个索引的成员 UUID")
+    @PacketHandler(value = "getMyPartyMemberUid", description = "获取我的队伍某个索引的成员 UUID", cooldown = PACKET_COOLDOWN)
     public void getMyPartyMemberUid(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "memberIndex", description = "成员索引") String memberIndex) {
@@ -436,7 +439,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                         : party.getMembers().get(memberIndexInt).getUniqueId().toString());
     }
 
-    @PacketHandler(value = "getMyPartyMemberName", description = "获取我的队伍某个索引的成员 UUID")
+    @PacketHandler(value = "getMyPartyMemberName", description = "获取我的队伍某个索引的成员 UUID", cooldown = PACKET_COOLDOWN)
     public void getMyPartyMemberName(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "memberIndex", description = "成员索引") String memberIndex) {
@@ -450,12 +453,12 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                         : party.getMembers().get(memberIndexInt).getName());
     }
 
-    @PacketHandler(value = "getMyPartyName", description = "获取我的队伍名称")
+    @PacketHandler(value = "getMyPartyName", description = "获取我的队伍名称", cooldown = PACKET_COOLDOWN)
     public void getMyPartyName(PacketContext<Player> packetContext) {
         sendPlaceholderForMyParty(packetContext, "NuStarParty_MyPartyName", Party::getPartyName);
     }
 
-    @PacketHandler(value = "getPartyListSize", description = "获取队伍总数量")
+    @PacketHandler(value = "getPartyListSize", description = "获取队伍总数量", cooldown = PACKET_COOLDOWN)
     public void getPartyListSize(PacketContext<Player> packetContext) {
         placeholderService.sendPlaceholder(
                 packetContext.getPacketSender().getSender(),
@@ -463,7 +466,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                 String.valueOf(partyService.getPartyList().size()));
     }
 
-    @PacketHandler(value = "getPartyName", description = "获取某个索引的队伍名称")
+    @PacketHandler(value = "getPartyName", description = "获取某个索引的队伍名称", cooldown = PACKET_COOLDOWN)
     public void getPartyName(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "partyIndex", description = "队伍索引") String partyIndex) {
@@ -472,7 +475,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                 packetContext, index, String.format("NuStarParty_PartyName_%s", partyIndex), Party::getPartyName);
     }
 
-    @PacketHandler(value = "getPartyMaxSize", description = "获取某个索引的最大队伍人数")
+    @PacketHandler(value = "getPartyMaxSize", description = "获取某个索引的最大队伍人数", cooldown = PACKET_COOLDOWN)
     public void getPartyMaxSize(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "partyIndex", description = "队伍索引") String partyIndex) {
@@ -483,7 +486,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                 party -> String.valueOf(party.getMaxSize()));
     }
 
-    @PacketHandler(value = "getPartySize", description = "获取某个索引的队伍人数(不包含队长)")
+    @PacketHandler(value = "getPartySize", description = "获取某个索引的队伍人数(不包含队长)", cooldown = PACKET_COOLDOWN)
     public void getPartySize(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "partyIndex", description = "队伍索引") String partyIndex) {
@@ -495,7 +498,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                 party -> String.valueOf(party.getSize()));
     }
 
-    @PacketHandler(value = "getPartyEmptyPositions", description = "获取某个索引的队伍剩余可加入人数")
+    @PacketHandler(value = "getPartyEmptyPositions", description = "获取某个索引的队伍剩余可加入人数", cooldown = PACKET_COOLDOWN)
     public void getPartyEmptyPositions(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "partyIndex", description = "队伍索引") String partyIndex) {
@@ -507,7 +510,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                 party -> String.valueOf(party.getEmptyPositions()));
     }
 
-    @PacketHandler(value = "getPartyUid", description = "获取某个索引的队伍 UUID")
+    @PacketHandler(value = "getPartyUid", description = "获取某个索引的队伍 UUID", cooldown = PACKET_COOLDOWN)
     public void getPartyUid(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "partyIndex", description = "队伍索引") String partyIndex) {
@@ -517,7 +520,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                         .toString());
     }
 
-    @PacketHandler(value = "getPartyLeaderName", description = "获取某个索引的队伍的队长名称")
+    @PacketHandler(value = "getPartyLeaderName", description = "获取某个索引的队伍的队长名称", cooldown = PACKET_COOLDOWN)
     public void getPartyLeaderName(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "partyIndex", description = "队伍索引") String partyIndex) {
@@ -527,7 +530,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                         .getName());
     }
 
-    @PacketHandler(value = "getPartyIsFull", description = "获取某个索引的队伍是否已满")
+    @PacketHandler(value = "getPartyIsFull", description = "获取某个索引的队伍是否已满", cooldown = PACKET_COOLDOWN)
     public void getPartyIsFull(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "partyIndex", description = "队伍索引") String partyIndex) {
@@ -539,7 +542,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                 party -> String.valueOf(party.isFull()));
     }
 
-    @PacketHandler(value = "getPartyLeaderUid", description = "获取某个索引的队伍的队长 UUID")
+    @PacketHandler(value = "getPartyLeaderUid", description = "获取某个索引的队伍的队长 UUID", cooldown = PACKET_COOLDOWN)
     public void getPartyLeaderUid(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "partyIndex", description = "队伍索引") String partyIndex) {
@@ -550,7 +553,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                         .toString());
     }
 
-    @PacketHandler(value = "getPartyMemberName", description = "获取某个索引的队伍的某个索引的成员名称")
+    @PacketHandler(value = "getPartyMemberName", description = "获取某个索引的队伍的某个索引的成员名称", cooldown = PACKET_COOLDOWN)
     public void getPartyMemberName(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "partyIndex", description = "队伍索引") String partyIndex,
@@ -567,7 +570,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                         : party.getMembers().get(memberIndexInt).getName());
     }
 
-    @PacketHandler(value = "getPartyMemberUid", description = "获取某个索引的队伍的某个索引的成员 UUID")
+    @PacketHandler(value = "getPartyMemberUid", description = "获取某个索引的队伍的某个索引的成员 UUID", cooldown = PACKET_COOLDOWN)
     public void getPartyMemberUid(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "partyIndex", description = "队伍索引") String partyIndex,
@@ -584,7 +587,7 @@ public class PartyPlaceholderPacket implements PacketProcessor {
                         : party.getMembers().get(memberIndexInt).getUniqueId().toString());
     }
 
-    @PacketHandler(value = "parseMenuPlaceholder", description = "使目标玩家解析一个菜单占位符")
+    @PacketHandler(value = "parseMenuPlaceholder", description = "使目标玩家解析一个菜单占位符", cooldown = PACKET_COOLDOWN)
     public void parsePlaceholder(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "playerUid", description = "目标玩家 UUID", converter = UidConverter.class)

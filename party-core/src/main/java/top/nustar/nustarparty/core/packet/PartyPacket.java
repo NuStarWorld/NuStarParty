@@ -48,6 +48,8 @@ import top.nustar.nustarparty.api.service.PartyService;
 @SuppressWarnings("unused")
 public class PartyPacket implements PacketProcessor {
 
+    private static final long PACKET_COOLDOWN = 500;
+
     private volatile PartyService partyService;
 
     private volatile PlaceholderService placeholderService;
@@ -75,22 +77,22 @@ public class PartyPacket implements PacketProcessor {
         }
     }
 
-    @PacketHandler(value = "createParty", description = "创建队伍")
+    @PacketHandler(value = "createParty", description = "创建队伍", cooldown = PACKET_COOLDOWN)
     public void createParty(PacketContext<Player> packetContext) {
         executeParty(packetContext.getPacketSender(), "NuStarParty_CreateParty", partyService::createParty);
     }
 
-    @PacketHandler(value = "quitParty", description = "退出队伍")
+    @PacketHandler(value = "quitParty", description = "退出队伍", cooldown = PACKET_COOLDOWN)
     public void quitParty(PacketContext<Player> packetContext) {
         executeParty(packetContext.getPacketSender(), "NuStarParty_QuitParty", partyService::quitParty);
     }
 
-    @PacketHandler(value = "disbandParty", description = "解散队伍")
+    @PacketHandler(value = "disbandParty", description = "解散队伍", cooldown = PACKET_COOLDOWN)
     public void disbandParty(PacketContext<Player> packetContext) {
         executeParty(packetContext.getPacketSender(), "NuStarParty_DisbandParty", partyService::disbandParty);
     }
 
-    @PacketHandler(value = "addJoinPartyRequest", description = "申请加入队伍")
+    @PacketHandler(value = "addJoinPartyRequest", description = "申请加入队伍", cooldown = PACKET_COOLDOWN)
     public void addJoinPartyRequest(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "partyUid", description = "队伍UUID", converter = UidConverter.class) UUID partyUid) {
@@ -100,7 +102,7 @@ public class PartyPacket implements PacketProcessor {
                 player -> partyService.addJoinPartyRequest(player, partyUid));
     }
 
-    @PacketHandler(value = "acceptJoinRequest", description = "接受加入队伍请求")
+    @PacketHandler(value = "acceptJoinRequest", description = "接受加入队伍请求", cooldown = PACKET_COOLDOWN)
     public void acceptJoinRequest(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "requesterName", description = "通过申请者的加入请求(名称)") String requesterName) {
@@ -110,7 +112,7 @@ public class PartyPacket implements PacketProcessor {
                 player -> partyService.acceptJoinApplication(player, requesterName));
     }
 
-    @PacketHandler(value = "kickMember", description = "踢出队伍成员")
+    @PacketHandler(value = "kickMember", description = "踢出队伍成员", cooldown = PACKET_COOLDOWN)
     public void kickMember(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "memberName", description = "被踢的玩家名称") String memberName,
@@ -119,7 +121,7 @@ public class PartyPacket implements PacketProcessor {
                 packetContext.getPacketSender(), "NuStarParty_KickMember", player -> partyService.kickMember(player, memberName, kickReason));
     }
 
-    @PacketHandler(value = "isInSameParty", description = "检查两个玩家是否在同一个队伍中")
+    @PacketHandler(value = "isInSameParty", description = "检查两个玩家是否在同一个队伍中", cooldown = PACKET_COOLDOWN)
     public void isInSameParty(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "playerUid1", description = "被检查的玩家1的 UUID", converter = UidConverter.class)
@@ -130,34 +132,34 @@ public class PartyPacket implements PacketProcessor {
     }
 
     // TODO 待实现
-    @PacketHandler(value = "invitePlayer", description = "邀请玩家加入队伍")
+    @PacketHandler(value = "invitePlayer", description = "邀请玩家加入队伍", cooldown = PACKET_COOLDOWN)
     public void invitePlayer(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "playerName", description = "被邀请的玩家名称") String playerName) {
         packetContext.getPacketSender().sendMessage("§a§l[!] §6NuStarParty §f- 玩家已邀请");
     }
 
-    @PacketHandler(value = "transferLeader", description = "转让队长")
+    @PacketHandler(value = "transferLeader", description = "转让队长", cooldown = PACKET_COOLDOWN)
     public void transferLeader(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "playerName", description = "被转让的玩家名称") String playerName) {
         packetContext.getPacketSender().sendMessage("§a§l[!] §6NuStarParty §f- 玩家已转让");
     }
 
-    @PacketHandler(value = "mergeParty", description = "合并队伍")
+    @PacketHandler(value = "mergeParty", description = "合并队伍", cooldown = PACKET_COOLDOWN)
     public void mergeParty(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "partyName", description = "要合并的队伍名称") String partyName) {
         packetContext.getPacketSender().sendMessage("§a§l[!] §6NuStarParty §f- 队伍已合并");
     }
 
-    @PacketHandler(value = "changePickupMode", description = "改变掉落物拾取模式")
+    @PacketHandler(value = "changePickupMode", description = "改变掉落物拾取模式", cooldown = PACKET_COOLDOWN)
     public void changePickupMode(
             PacketContext<Player> packetContext, @PacketArgument(value = "mode", description = "掉落物拾取模式") String mode) {
         packetContext.getPacketSender().sendMessage("§a§l[!] §6NuStarParty §f- 掉落物拾取模式已改变");
     }
 
-    @PacketHandler(value = "setPartyDestination", description = "设置队伍目的地")
+    @PacketHandler(value = "setPartyDestination", description = "设置队伍目的地", cooldown = PACKET_COOLDOWN)
     public void setPartyDestination(
             PacketContext<Player> packetContext,
             @PacketArgument(value = "destination", description = "目标") String destination,
@@ -165,7 +167,7 @@ public class PartyPacket implements PacketProcessor {
         packetContext.getPacketSender().sendMessage("§a§l[!] §6NuStarParty §f- 队伍目的地已设置");
     }
 
-    @PacketHandler(value = "sendGatherRequest", description = "发送队伍集合请求")
+    @PacketHandler(value = "sendGatherRequest", description = "发送队伍集合请求", cooldown = PACKET_COOLDOWN)
     public void sendGatherRequest(PacketContext<Player> packetContext) {
         packetContext.getPacketSender().sendMessage("§a§l[!] §6NuStarParty §f- 队伍集合请求已发送");
     }

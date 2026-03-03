@@ -38,7 +38,6 @@ import top.nustar.nustarparty.api.event.*;
 import top.nustar.nustarparty.api.language.PartyLanguage;
 import top.nustar.nustarparty.api.service.PartyService;
 import top.nustar.nustarparty.core.configuration.PartyConfiguration;
-import top.nustar.nustarparty.core.entity.PartyImpl;
 import top.nustar.nustarparty.core.factory.PartyMenuFactory;
 import top.nustar.nustarparty.core.manager.InviteManager;
 import top.nustar.nustarparty.core.manager.PartyManager;
@@ -121,7 +120,7 @@ public class PartyServiceImpl implements PartyService {
         CreatePartyEvent.Pre createPartyEvent = new CreatePartyEvent.Pre(player);
         Bukkit.getPluginManager().callEvent(createPartyEvent);
         if (createPartyEvent.isCancelled()) return false;
-        PartyImpl createParty = partyManager.createParty(player, partyConfiguration.getPartyMaxSize());
+        Party createParty = partyManager.createParty(player, partyConfiguration.getPartyMaxSize());
         Bukkit.getPluginManager().callEvent(new CreatePartyEvent.After(player, createParty));
         partyLanguage.getOnCreateParty().use(player::sendMessage);
         return true;

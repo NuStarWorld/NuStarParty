@@ -24,8 +24,10 @@ import java.util.function.Consumer;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import team.idealstate.sugar.next.context.annotation.component.Component;
+import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarparty.api.entity.Party;
+import top.nustar.nustarparty.api.hook.MythicDungeonsHook;
 import top.nustar.nustarparty.api.next.NuStarPartyProperties;
 import top.nustar.nustarparty.core.entity.PartyImpl;
 
@@ -36,6 +38,8 @@ import top.nustar.nustarparty.core.entity.PartyImpl;
 @Component
 @DependsOn(properties = @DependsOn.Property(key = NuStarPartyProperties.IS_SUB_PLUGIN, value = "false"))
 public class PartyManager {
+
+    private MythicDungeonsHook mythicDungeonsHook;
     private final Map<UUID, Party> partyMap = new LinkedHashMap<>();
     private final Map<UUID, Party> playerPartyMap = new ConcurrentHashMap<>();
 
@@ -47,8 +51,12 @@ public class PartyManager {
         playerPartyMap.put(player.getUniqueId(), party);
     }
 
-    public PartyImpl createParty(Player leader, int maxSize) {
-        PartyImpl party = new PartyImpl(UUID.randomUUID(), leader, maxSize);
+    public Party createParty(Player leader, int maxSize) {
+        Party party = new PartyImpl(UUID.randomUUID(), leader, maxSize);
+        // 兼容 MythicDungeons
+        if (mythicDungeonsHook != null) {
+            party = mythicDungeonsHook.triggerMythicDungeonParty(party);
+        }
         partyMap.put(party.getPartyUUID(), party);
         playerPartyMap.put(leader.getUniqueId(), party);
         return party;
@@ -77,5 +85,10 @@ public class PartyManager {
 
     public List<Party> getPartyList() {
         return new ArrayList<>(partyMap.values());
+    }
+
+    @Autowired
+    public void setMythicDungeonsHook(MythicDungeonsHook mythicDungeonsHook) {
+        this.mythicDungeonsHook = mythicDungeonsHook;
     }
 }

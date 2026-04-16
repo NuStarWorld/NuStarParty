@@ -228,6 +228,9 @@ public class PartyPlaceholder implements Placeholder {
             @CommandArgument() String playerUid,
             @CommandArgument() String placeholder) {
         try {
+            if (playerUid == null || playerUid.isEmpty()) {
+                return CommandResult.failure("玩家UID不能为空");
+            }
             UUID playerUUID = UUID.fromString(playerUid);
             return CommandResult.success(PartyMenuAPI.parse(
                     placeholder, MenuPlaceholderContext.create(Bukkit.getOfflinePlayer(playerUUID))));
